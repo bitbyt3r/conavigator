@@ -27,6 +27,8 @@ if __name__ == '__main__':
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, camera['height'])
     cap.set(cv2.CAP_PROP_FPS, camera['fps'])
 
+    trackers = {}
+
     def detectMarkers():
         ret, frame = cap.read()
         if not ret:
@@ -36,12 +38,15 @@ if __name__ == '__main__':
         markers = detector.detect(frame)
         data = {}
         for marker in markers:
-            marker.calculateExtrinsics(config['markerSize'], camparam)
-            data[marker.id] = {
-                "corners": [x.tolist() for x in marker],
-                "rotation": marker.Rvec.transpose().tolist()[0],
-                "translation": marker.Tvec.transpose().tolist()[0]
-            }
+            if not marker.id in trackers:
+                trackers[marker.id] = aruco.MarkerPoseTracker()
+            #marker.calculateExtrinsics(config['markerSize'], camparam)
+            if trackers[marker.id].estimatePose(marker, camparam, config['markerSize'], config['minErrorRatio']):
+                data[marker.id] = {
+                    "corners": [x.tolist() for x in marker],
+                    "rotation": marker.Rvec.transpose().tolist()[0],
+                    "translation": marker.Tvec.transpose().tolist()[0]
+                }
         return json.dumps(data)
 
     loop = asyncio.get_event_loop()

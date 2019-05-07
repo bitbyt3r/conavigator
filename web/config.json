@@ -10,5 +10,6 @@
             "fps": 60
         }
     ],
-    "markerSize": 0.015
+    "markerSize": 0.01,
+    "minErrorRatio": 4
 }
