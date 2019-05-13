@@ -1,15 +1,16 @@
 {
     "cameras": [
         {
-            "name": "Left",
+            "name": "Camera",
             "server": "localhost",
             "port": 8080,
-            "paramFile": "Left.yml",
+            "paramFile": "Camera.yml",
             "width": 1920,
-            "height": 1080,
-            "fps": 60
+            "height": 1200,
+            "fps": 60,
+            "id": 0
         }
     ],
-    "markerSize": 0.01,
+    "markerSize": 19,
     "minErrorRatio": 4
 }
